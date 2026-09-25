@@ -27,3 +27,6 @@ Define evaluation suites as versioned contracts; isolate judge/model adapters; r
 
 ## What this is not
 This is a reference implementation. Production deployment still requires environment-specific SLOs, capacity planning, secrets management, dependency hardening, and operational ownership.
+
+
+<!-- Principal artifact validation checkpoint -->
