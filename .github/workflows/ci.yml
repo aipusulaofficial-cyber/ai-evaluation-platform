@@ -14,6 +14,8 @@ jobs:
         run: git diff --check
       - name: Validate principal artifacts
         run: python -c "from pathlib import Path; required=['ARCHITECTURE.md','ENGINEERING-CHAIN.md','docs/PRINCIPAL-ENGINEERING.md','docs/CONTRACTS.md','docs/FAILURE-MATRIX.md','docs/OPERATIONS.md','docs/SLO.md','ADRs/0001-architecture-boundary.md','ADRs/0003-failure-retry-strategy.md','ADRs/0004-security-decision.md']; assert all(Path(p).is_file() and Path(p).read_text().strip() for p in required)"
+      - name: Install test runner
+        run: python -m pip install pytest
       - name: Run artifact contract tests
         run: python -m pytest -q tests/test_principal_artifacts.py
       - name: Validate architecture chain
