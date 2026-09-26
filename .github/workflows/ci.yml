@@ -8,15 +8,22 @@ permissions: {contents: read}
 jobs:
   principal-boundary:
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install test dependencies
+        run: python -m pip install -e ".[dev]"
       - name: Repository whitespace gate
         run: git diff --check
       - name: Validate principal artifacts
         run: python -c "from pathlib import Path; required=['ARCHITECTURE.md','ENGINEERING-CHAIN.md','docs/PRINCIPAL-ENGINEERING.md','docs/CONTRACTS.md','docs/FAILURE-MATRIX.md','docs/OPERATIONS.md','docs/SLO.md','ADRs/0001-architecture-boundary.md','ADRs/0003-failure-retry-strategy.md','ADRs/0004-security-decision.md']; assert all(Path(p).is_file() and Path(p).read_text().strip() for p in required)"
-      - name: Install test runner
-        run: python -m pip install pytest
-      - name: Run artifact contract tests
-        run: python -m pytest -q tests/test_principal_artifacts.py
+      - name: Run artifact and runtime contract tests
+        run: python -m pytest -q
+      - name: Lint
+        run: ruff check .
       - name: Validate architecture chain
         run: test -s ARCHITECTURE.md && test -s ENGINEERING-CHAIN.md && test -s docs/CONTRACTS.md && test -s docs/FAILURE-MATRIX.md && test -s docs/OPERATIONS.md && test -s docs/SLO.md
