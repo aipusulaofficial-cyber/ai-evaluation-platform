@@ -1,29 +1,30 @@
 # AI Evaluation Platform
 
-**Principal-level reference implementation** focused on evaluation orchestration, dataset/version management, deterministic scoring, and evidence-backed quality gates.
+An evaluation execution platform that turns versioned datasets, evaluators and scoring rules into reproducible quality evidence.
 
-## Engineering intent
-- Clear domain boundaries and replaceable infrastructure adapters
-- Explicit contracts, validation, and failure semantics
-- Deterministic tests with external dependencies isolated
-- Operational readiness through health checks, CI, and security validation
-- Architecture decisions documented so trade-offs are reviewable
+## Evaluation flow
+```text
+Dataset version + rubric
+        -> evaluation run
+        -> evaluator / judge adapters
+        -> deterministic scoring
+        -> run metadata + evidence
+```
 
-## System design
-The repository is structured around a small set of explicit responsibilities rather than framework-driven coupling. Request/event handling, domain policy, infrastructure adapters, and operational concerns are kept separable so individual components can evolve without forcing a system-wide rewrite.
+## Project boundaries
+- Dataset and rubric versioning define the evaluation input contract.
+- Evaluator adapters isolate model/provider dependencies.
+- Scoring remains a separate domain concern from transport and infrastructure.
+- Run metadata makes results reproducible and reviewable.
+- Quality gates can consume evaluation evidence without coupling to provider APIs.
 
-## Quality bar
-- **Correctness:** contract and edge-case tests cover expected and failure paths
-- **Reliability:** bounded work, explicit timeouts/failures, and health signals where applicable
-- **Security:** least-privilege boundaries, input validation, and safe defaults
-- **Observability:** correlation/context propagation and actionable operational signals
-- **Delivery:** reproducible CI validation before changes are considered complete
+## Failure semantics
+Invalid datasets, incompatible evaluator configuration and dependency failures are explicit outcomes. External services are isolated so failure-path tests do not depend on live providers.
 
-## Principal engineering contract
-See [docs/PRINCIPAL-ENGINEERING.md](docs/PRINCIPAL-ENGINEERING.md) for the reviewable engineering contract, NFRs, and change-safety checklist.
+## Verification
+Contract, edge-case and failure-path tests are part of CI. Security and production validation protect the delivery path.
 
-## Architecture & decisions
-See [ARCHITECTURE.md](ARCHITECTURE.md) and the ADRs directory for system boundaries, key trade-offs, and extension points.
+## Evidence
+[docs/PRINCIPAL-ENGINEERING.md](docs/PRINCIPAL-ENGINEERING.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [ADRs](ADRs/)
 
-## Engineering principle
-The goal is not to maximize framework complexity; it is to make important behavior **explicit, testable, observable, and replaceable**.
+The project is designed around reproducible evaluation runs, not ad-hoc prompt experimentation.
