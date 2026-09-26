@@ -1,19 +1,16 @@
 # Architecture
 
 ## Purpose
-Evaluation platform reference architecture for ai-evaluation-platform.
+A deterministic evaluation engine for versioned AI evaluation cases.
 
-## System boundary
-The repository currently documents the architectural boundary but does not contain a runtime implementation. This is intentional: the documented boundary must not be mistaken for implemented capability.
+## Boundary
+The core runtime owns domain validation, evaluator invocation and reproducible result assembly. External model/provider adapters are outside the core and must return normalized scores.
 
-## Primary responsibility
-Versioned evaluation inputs, evaluator execution, scoring and reproducible results.
+## Data flow
+EvaluationCase → Evaluator adapter → bounded score → EvaluationResult → EvaluationRun.
 
-## Design principles
-- Keep domain decisions separate from infrastructure concerns.
-- Make external contracts explicit before implementation.
-- Define failure semantics and operational ownership before production use.
-- Treat security, observability and delivery as architectural concerns.
+## Failure semantics
+Invalid inputs and invalid evaluator outputs fail closed. The core engine performs no hidden retries or network calls.
 
-## Evidence chain
-See [Engineering Chain](docs/ENGINEERING-CHAIN.md) and [Principal Engineering Contract](docs/PRINCIPAL-ENGINEERING.md).
+## Non-functional requirements
+Deterministic, auditable, bounded and testable. Provider-specific timeouts/retries remain at the adapter boundary.
