@@ -1,23 +1,36 @@
 import pytest
+
 from evaluation_platform import EvaluationCase, EvaluationEngine
 
+
 def test_evaluates_cases_deterministically():
-    engine = EvaluationEngine(lambda case: (1.0 if case.input == case.expected else 0.0, case.input == case.expected))
+    engine = EvaluationEngine(
+        lambda case: (
+            1.0 if case.input == case.expected else 0.0,
+            case.input == case.expected,
+        )
+    )
     run = engine.evaluate(
-        [EvaluationCase("case-1", "hello", "hello"), EvaluationCase("case-2", "bye", "hello")],
+        [
+            EvaluationCase("case-1", "hello", "hello"),
+            EvaluationCase("case-2", "bye", "hello"),
+        ],
         run_id="run-1",
     )
     assert [result.score for result in run.results] == [1.0, 0.0]
     assert [result.passed for result in run.results] == [True, False]
 
+
 def test_rejects_invalid_case():
     with pytest.raises(ValueError):
         EvaluationCase("", "input", "expected")
+
 
 def test_rejects_invalid_score():
     engine = EvaluationEngine(lambda _: (1.5, False))
     with pytest.raises(ValueError):
         engine.evaluate([EvaluationCase("case-1", "x", "y")], run_id="run-1")
+
 
 def test_rejects_empty_run():
     engine = EvaluationEngine(lambda _: (1.0, True))
