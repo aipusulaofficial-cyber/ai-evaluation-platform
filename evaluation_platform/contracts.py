@@ -1,5 +1,6 @@
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import Mapping, Sequence
+
 
 @dataclass(frozen=True)
 class EvaluationCase:
@@ -15,6 +16,7 @@ class EvaluationCase:
         if not self.expected.strip():
             raise ValueError("expected must not be empty")
 
+
 @dataclass(frozen=True)
 class EvaluationResult:
     case_id: str
@@ -28,6 +30,7 @@ class EvaluationResult:
             raise ValueError("score must be between 0 and 1")
         if not self.evaluator.strip():
             raise ValueError("evaluator must not be empty")
+
 
 @dataclass(frozen=True)
 class EvaluationRun:
