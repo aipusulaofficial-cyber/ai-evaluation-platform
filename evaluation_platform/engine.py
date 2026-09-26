@@ -1,7 +1,9 @@
 from collections.abc import Callable, Iterable
+
 from .contracts import EvaluationCase, EvaluationResult, EvaluationRun
 
 Evaluator = Callable[[EvaluationCase], tuple[float, bool]]
+
 
 class EvaluationEngine:
     def __init__(self, evaluator: Evaluator, *, evaluator_name: str = "default") -> None:
@@ -28,4 +30,8 @@ class EvaluationEngine:
             )
         if not results:
             raise ValueError("evaluation run requires at least one case")
-        return EvaluationRun(run_id=run_id, results=tuple(results), metadata={"evaluator": self._evaluator_name})
+        return EvaluationRun(
+            run_id=run_id,
+            results=tuple(results),
+            metadata={"evaluator": self._evaluator_name},
+        )
