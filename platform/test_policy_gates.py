@@ -1,4 +1,4 @@
-from platform.quality_gate import evaluate
+from quality_gate import evaluate
 
 def test_quality_gate():
     assert evaluate(0.90).decision == "ALLOW"
