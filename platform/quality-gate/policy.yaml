@@ -1,0 +1,10 @@
+version: "1"
+quality:
+  required: true
+  minimum_score: 0.80
+  require_evidence: true
+adjudication:
+  required_when_disagreement: true
+audit:
+  required: true
+on_failure: DENY
