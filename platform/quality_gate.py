@@ -1,11 +1,13 @@
 """Deterministic quality release gate."""
 from dataclasses import dataclass
 
+
 @dataclass(frozen=True)
 class QualityDecision:
     decision: str
     score: float
     reason: str
+
 
 def evaluate(score: float, minimum: float = 0.80, evidence: bool = True) -> QualityDecision:
     if not evidence:
