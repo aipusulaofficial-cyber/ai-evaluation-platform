@@ -1,4 +1,5 @@
 """Deterministic quality release gate."""
+
 from dataclasses import dataclass
 
 
