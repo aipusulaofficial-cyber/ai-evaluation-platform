@@ -28,3 +28,6 @@ Contract, edge-case and failure-path tests are part of CI. Security and producti
 [docs/PRINCIPAL-ENGINEERING.md](docs/PRINCIPAL-ENGINEERING.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [ADRs](ADRs/)
 
 The project is designed around reproducible evaluation runs, not ad-hoc prompt experimentation.
+
+## Portfolio evidence
+[Portfolio evidence map](docs/PORTFOLIO_EVIDENCE.md) — executable proof, architecture mapping and reviewable CI evidence.
