@@ -62,4 +62,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: evaluation-test-evidence
-          path: artifacts/evaluation-test-results.xml\n          if-no-files-found: error
+          path: |
+            artifacts/evaluation-test-results.xml
+            artifacts/evaluation-report.json
+          if-no-files-found: error
