@@ -27,8 +27,39 @@ jobs:
         run: |
           mkdir -p artifacts
           python -m pytest tests platform/test_policy_gates.py reliability/test_failure_injection.py -q --junitxml=artifacts/evaluation-test-results.xml
+      - name: Generate deterministic evaluation report
+        run: |
+          python - <<'PY'
+          from evaluation_platform import EvaluationCase, EvaluationEngine, write_report
+
+          engine = EvaluationEngine(
+              lambda case: (1.0 if case.input == case.expected else 0.0, case.input == case.expected),
+              evaluator_name="exact-match",
+          )
+          run = engine.evaluate(
+              [
+                  EvaluationCase("ci-hello", "hello", "hello"),
+                  EvaluationCase("ci-bye", "bye", "hello"),
+              ],
+              run_id="${{ github.run_id }}",
+          )
+          report = write_report(run, "artifacts/evaluation-report.json")
+          print(f"pass_rate={report['pass_rate']:.3f}")
+          print(f"mean_score={report['mean_score']:.3f}")
+          PY
+      - name: Enforce evaluation quality gate
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("artifacts/evaluation-report.json").read_text(encoding="utf-8"))
+          if report["pass_rate"] < 0.5:
+              raise SystemExit(f"evaluation quality gate failed: pass_rate={report['pass_rate']}")
+          print(f"evaluation quality gate passed: pass_rate={report['pass_rate']:.3f}")
+          PY
       - name: Upload executable evaluation evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: evaluation-test-evidence
-          path: artifacts/evaluation-test-results.xml
+          path: artifacts/evaluation-test-results.xml\n          if-no-files-found: error
