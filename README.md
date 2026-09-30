@@ -1,5 +1,10 @@
 # AI Evaluation Platform
 
+[![CI](https://github.com/aipusulaofficial-cyber/ai-evaluation-platform/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/aipusulaofficial-cyber/ai-evaluation-platform/actions/workflows/ci.yml)
+[![Benchmark / Reliability](https://github.com/aipusulaofficial-cyber/ai-evaluation-platform/actions/workflows/benchmark-reliability.yml/badge.svg?branch=main)](https://github.com/aipusulaofficial-cyber/ai-evaluation-platform/actions/workflows/benchmark-reliability.yml)
+[![Security / SBOM](https://github.com/aipusulaofficial-cyber/ai-evaluation-platform/actions/workflows/security-sbom.yml/badge.svg?branch=main)](https://github.com/aipusulaofficial-cyber/ai-evaluation-platform/actions/workflows/security-sbom.yml)
+
+
 An evaluation execution platform that turns versioned datasets, evaluators and scoring rules into reproducible quality evidence.
 
 ## Evaluation flow
