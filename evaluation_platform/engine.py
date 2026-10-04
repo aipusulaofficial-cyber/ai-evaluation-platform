@@ -25,9 +25,13 @@ class EvaluationEngine:
         if not run_id.strip():
             raise ValueError("run_id must not be empty")
         results: list[EvaluationResult] = []
+        seen_case_ids: set[str] = set()
         for index, case in enumerate(cases, start=1):
             if index > self._max_cases:
                 raise ValueError(f"evaluation run exceeds max_cases={self._max_cases}")
+            if case.case_id in seen_case_ids:
+                raise ValueError(f"duplicate evaluation case id: {case.case_id}")
+            seen_case_ids.add(case.case_id)
             score, passed = self._evaluator(case)
             if not 0.0 <= score <= 1.0:
                 raise ValueError(f"evaluator returned invalid score for {case.case_id}")
